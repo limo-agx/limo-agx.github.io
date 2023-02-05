@@ -41,6 +41,13 @@ div.body {
     padding: 0 20px 30px 20px;
 }
 
+.caption-text {
+    color: #db1f18;
+    text-align: justify;
+    line-height: 130%;
+    font-weight: bold;
+}
+
 div.footer {
     color: #ffffff;
     width: 100%;
@@ -113,12 +120,10 @@ div.sphinxsidebar input {
     font-size: 1em;
 }
 
-
-
 /* -- hyperlink styles ------------------------------------------------------ */
 
 a {
-    color: #000000;
+    color: #355f7c;
     text-decoration: none;
 }
 
@@ -172,6 +177,7 @@ a.headerlink:hover {
 div.body p, div.body dd, div.body li, div.body blockquote {
     text-align: justify;
     line-height: 130%;
+    color: #000000;
 }
 
 div.admonition p.admonition-title + p {
@@ -215,22 +221,6 @@ p.admonition-title {
 
 p.admonition-title:after {
     content: ":";
-}
-
-pre {
-    padding: 5px;
-    background-color: #eeffcc;
-    color: #333333;
-    line-height: 120%;
-    border: 1px solid #ac9;
-    border-left: none;
-    border-right: none;
-}
-
-code {
-    background-color: #ecf0f3;
-    padding: 0 1px 0 1px;
-    font-size: 0.95em;
 }
 
 th {

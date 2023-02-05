@@ -16,7 +16,6 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'limo-agx'
@@ -67,7 +66,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = "paraiso-dark"
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -100,8 +99,9 @@ html_static_path = ['_static']
 # default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
 # 'searchbox.html']``.
 #
-# html_sidebars = {}
-
+html_sidebars = {
+   '**': ['sidebartoc.html']
+}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
