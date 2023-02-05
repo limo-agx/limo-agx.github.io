@@ -5,9 +5,9 @@ Welcome to limo-agx's documentation!
    :maxdepth: 1
    :caption: Getting Started
 
-   ros_basics
    simulating_limo
    controlling_limo
+   useful_links
 
 .. toctree::
    :maxdepth: 1
