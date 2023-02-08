@@ -31,6 +31,7 @@ Currently the Limo software is distributed from source and built locally.  To cr
     git clone https://github.com/limo-agx/limo.git
     git clone https://github.com/limo-agx/limo_robot.git
     git clone https://ithub.com/limo-agx/limo_desktop.git
+    git clone https://github.com/orbbec/ros_astra_camera.git
 
     # install dependencies
     cd ~/catkin_ws/
@@ -38,3 +39,21 @@ Currently the Limo software is distributed from source and built locally.  To cr
 
     # build everything
     catkin_make
+
+Setup Orbbec Camera
+-------------------
+
+.. code-block:: bash
+
+    sudo apt install libgflags-dev  ros-$ROS_DISTRO-image-geometry ros-$ROS_DISTRO-camera-info-manager\
+    ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher libgoogle-glog-dev libusb-1.0-0-dev libeigen3-dev
+
+.. code-block:: bash
+
+    git clone https://github.com/libuvc/libuvc.git
+    cd libuvc
+    mkdir build && cd build
+    cmake .. && make -j4
+    sudo make install
+    sudo ldconfig
+
