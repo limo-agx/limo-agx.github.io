@@ -5,6 +5,7 @@ Welcome to limo-agx's documentation!
    :maxdepth: 1
    :caption: Getting Started
 
+   developer_machine_setup
    simulating_limo
    controlling_limo
    useful_links

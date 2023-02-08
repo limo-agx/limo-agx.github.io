@@ -20,4 +20,3 @@ Packages
     `gmapping <http://wiki.ros.org/gmapping>`_
     `RVIZ <https://wiki.ros.org/rviz>`_
     `Gazebo <https://wiki.ros.org/gazebo>`_
-
