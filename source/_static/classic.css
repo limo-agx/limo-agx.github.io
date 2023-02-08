@@ -35,6 +35,10 @@ div.bodywrapper {
     margin: 0 0 0 230px;
 }
 
+img {
+    width: 50%;
+}
+
 div.body {
     background-color: #ffffff;
     color: #db1f18;
