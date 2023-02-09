@@ -22,7 +22,7 @@ Starting a Simulation
 
 There are two launch files for adding a limo to this environment, either `limo_ackerman.launch` or `limo_four_diff.launch`.  This will spawn a Limo at the origin of the environment with a stereo camera and a 2D lidar.
 
-Once the simulation is started, check out :doc:`Controlling Limo <controlling_limo>` or :doc:`Gmapping Navigation <navigation_gmapping>` to start using it
+Once the simulation is started, check out :doc:`Controlling Limo <controlling_limo>` or :doc:`Gmapping Navigation <navigation_gmapping>` to start using it.
 
 Notes
 -----
