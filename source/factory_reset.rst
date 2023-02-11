@@ -40,6 +40,18 @@ Currently the Limo software is distributed from source and built locally.  To cr
     # build everything
     catkin_make
 
+.. _sourcing:
+Sourcing Your Workspace
+-----------------------
+
+Once everything is setup and built, you will need to source you workspace.  This makes the software available in the terminal.
+
+.. code-block:: bash
+
+    source ~/catkin_ws/devel/setup.bash
+
+The command needs to be typed in every terminal you start.  If you want it to always be sourced, you can add the line to the bottom of your ~/.bashrc file
+
 Setup Orbbec Camera
 -------------------
 
