@@ -11,7 +11,7 @@ Building Simulation Packages
 .. code-block:: bash
 
     cd  ~/catkin_ws/src
-    git clone git@github.com:limo-agx/limo_simulator.git
+    git clone https://github.com/limo-agx/limo_simulator.git
     cd  ~/catkin_ws
     rosdep install --from-paths src --ignore-src -y
     catkin_make
