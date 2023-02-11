@@ -29,4 +29,17 @@ If you are always working with ROS and want the ROS software to start automatica
 
 Then, make sure your workspace is sourced properly.  Check out *Sourcing Your Workspace* under :doc:`Factory Reset <factory_reset>`
 
-words and stuff
+To create the startup job, run the command below
+
+.. code-block:: bash
+
+    rosrun robot_upstart install limo_bringup/launch/limo_start.launch
+    sudo systemctl daemon-reload && sudo systemctl start limo
+
+Now, every time you turn on your Limo, the default ROS drivers will start. 
+
+If you don't want the ROS to startup automatically anymore, run the command below
+
+.. code-block:: bash
+
+    sudo systemctl disable limo
