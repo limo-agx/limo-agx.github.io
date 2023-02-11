@@ -67,13 +67,19 @@ Our urdf has a static (fixed) joint that connects a link called "cone_link" to "
 Add it to the Limo
 ------------------
 
+The limo has a line in the URDF that allows simple modification.  This will include nothing by default, but if a URDF is specified at the `URDF_EXTENSION` environment variable, it will include it
+
 .. code-block:: xml
     
     <xacro:include filename="$(optenv URDF_EXTENSION empty.urdf)" />
 
+To set the environment variable, past the line below into your terminal
+
 .. code-block:: bash
     
     export URDF_EXTENSION=$(catkin_find limo_description urdf/cone.urdf.xacro --first-only)
+
+This will use catkin to find the limo_description package and then return the filepath for urdf/cone.urdf.xacro.  All of that will be saved in the `URDF_EXTENSION` environment variable
 
 URDF Adjustments
 ----------------
