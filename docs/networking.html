@@ -1,0 +1,179 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Networking Multiple ROS Machines &#8212; limo-agx  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Limo Startup" href="starting_limo.html" />
+    <link rel="prev" title="RTABMap" href="navigation_rtabmap.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="starting_limo.html" title="Limo Startup"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="navigation_rtabmap.html" title="RTABMap"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="networking-multiple-ros-machines">
+<h1>Networking Multiple ROS Machines<a class="headerlink" href="#networking-multiple-ros-machines" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-a-ros-master">
+<h2>Setting a ROS master<a class="headerlink" href="#setting-a-ros-master" title="Permalink to this headline">¶</a></h2>
+<p>ROS coordinates all messages between nodes using a Master.  This a simple program that keeps records of all the nodes and topics on the ROS network.  ROS assumes the master is running on the local computer, but that might not be the case when using multiple computers.  It is common to run the master on the robot.</p>
+<p>To set the master, run this command in every terminal on all of the machines that aren’t the robot.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">ROS_MASTER_URI</span><span class="o">=</span>http://&lt;robot_hostname&gt;:11311
+</pre></div>
+</div>
+<p>You can do a quick check to make sure everything is working by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rostopic list
+</pre></div>
+</div>
+<p>As long as ROS is running, you should see a list of topics that are available</p>
+<img alt="_images/networking_rostopic_list.png" src="_images/networking_rostopic_list.png" />
+<p>If this command hangs, it might be having issues talking to the remote PC.  Look at the the next section to fix it</p>
+</div>
+<div class="section" id="hosts">
+<h2>Hosts<a class="headerlink" href="#hosts" title="Permalink to this headline">¶</a></h2>
+<p>When you subscribe or publish to a topic, the node will form a connection to any node that is using that topic.  To do that, it needs to know where those other nodes are.  The node will ask the Ros Master what is using that topic and the master will reply with a list of publishers and subscribers.</p>
+<p>You can see the details of this by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rostopic info &lt;a topic name&gt;
+</pre></div>
+</div>
+<p>That will show information like message type and information about the subscribers and publishers.  Note beside each publisher or subscriber, there is a hostname.  That is how other machines will try to communicate with it.</p>
+<img alt="_images/networking_message_info.png" src="_images/networking_message_info.png" />
+<p>Normally a hostname is resolved to an IP address using a DNS server, but that often isn’t available in a direct network like this.  One solution would be to set the <cite>ROS_IP</cite> variable on each machine in the network.  That would force the machine to register with its IP address instead of its hostname.</p>
+<p>Another more common option is to tell each machine the IP address behind the hostname using a hosts file. The first step is to find the IP address of each computer.  On each one, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ip a
+</pre></div>
+</div>
+<img alt="_images/networking_ip.png" src="_images/networking_ip.png" />
+<p>That will display information about all the network devices.  However you will be communicating with the machine (wifi, ethernet, etc), note the IP address.  On all of the other machines, you will need to add the hostname and IP to the hosts file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo nano /etc/hosts
+</pre></div>
+</div>
+<img alt="_images/networking_hosts.png" src="_images/networking_hosts.png" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h4>Contents</h4>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_machine_setup.html">Developer Machine Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-limo-software">Install Limo Software</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulating_limo.html">Simulating Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#building-simulation-packages">Building Simulation Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#starting-a-simulation">Starting a Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling_limo.html">Controlling a Real Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#keyboard-control">Keyboard Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#rviz-control">RVIZ Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#terminal-control">Terminal Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#ros">ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Autonomy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigation_gmapping.html">GMapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="navigation_rtabmap.html">RTABMap</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Networking Multiple ROS Machines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-a-ros-master">Setting a ROS master</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hosts">Hosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting_limo.html">Limo Startup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#connect-to-the-limo">Connect to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#automatic-startup">Automatic Startup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_urdf.html">Customizing Limo’s URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#pick-a-mounting-point">Pick a Mounting Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#create-your-urdf">Create your URDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#add-it-to-the-limo">Add it to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#urdf-adjustments">URDF Adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#gazebo">Gazebo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factory_reset.html">Factory Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="starting_limo.html" title="Limo Startup"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="navigation_rtabmap.html" title="RTABMap"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, AgileY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

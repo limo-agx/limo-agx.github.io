@@ -1,0 +1,178 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>GMapping &#8212; limo-agx  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RTABMap" href="navigation_rtabmap.html" />
+    <link rel="prev" title="Useful Resources" href="useful_links.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="navigation_rtabmap.html" title="RTABMap"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="useful_links.html" title="Useful Resources"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gmapping">
+<h1>GMapping<a class="headerlink" href="#gmapping" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial is using a <a class="reference internal" href="simulating_limo.html"><span class="doc">simulation</span></a>, but the process would be the same for a real Limo</p>
+<p>For navigation to be useful, the robot needs a map of the environment around it.  It will use that map for high-level planning.  We are going to use Gmapping to create that map.  It uses something called SLAM (Simultaneous Localization and Mapping) to create that map.  The robot will get data from its sensors (2D lidar).  It will use that data to find itself in the current map (Localization), then add any new data to the map (Mapping).  It will repeat this loop over and over until a map is complete.</p>
+<div class="section" id="creating-a-map">
+<h2>Creating a Map<a class="headerlink" href="#creating-a-map" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_navigation limo_gmapping.launch
+</pre></div>
+</div>
+<p>This will start gmapping in the terminal.  Now you need to drive the robot around the environment.  Ideally it will see the same areas multiple times.  This will create a better map.  See <a class="reference internal" href="controlling_limo.html"><span class="doc">control</span></a> for how to drive it around.</p>
+<p>To monitor the mapping process, you can run RVIZ</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_viz view_navigation
+</pre></div>
+</div>
+<img alt="_images/gmapping.png" src="_images/gmapping.png" />
+<p>Once your map looks complete, you will want to save it for future use.  This command will save a map (yaml and pgm file) in the directory in which it was run</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun map_server map_saver
+</pre></div>
+</div>
+</div>
+<div class="section" id="autonomous-navigation">
+<h2>Autonomous Navigation<a class="headerlink" href="#autonomous-navigation" title="Permalink to this headline">¶</a></h2>
+<p>Once the robot has a map of the environment, it can navigate around it.  To start navigation, run <strong>one</strong> of the commands below depending on how your robot is setup</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_navigation limo_amcl_diff.launch
+roslaunch limo_navigation limo_amcl_ackerman.launch
+</pre></div>
+</div>
+<p>You can optionally pass-in “map_file” as a parameter that points to the map you created.  For this tutorial, we will use the included map of the environment by default.</p>
+<p>This command will start a map server, amcl and move_base.</p>
+<ul class="simple">
+<li>The map server will load the map and make it available through the /map topic</li>
+<li>amcl will take sensor data from the lidar and try to estimate where the robot is in the map.  Driving the robot around will improve the accuracy of this estimate</li>
+<li>move_base will take the position estimate from amcl and the map from the map server and it will plan how to get to the requested position (gloabl plan).  It will also take sensor data from the lidar to replan around new obstacles (local plan) as it tries to follow the global plan</li>
+</ul>
+<img alt="_images/gmapping_navigation.png" src="_images/gmapping_navigation.png" />
+<p>To send the robot a goal, you can either send a message to the <cite>/move_base_simple/goal</cite> topic, or you can use the interactive <cite>2D Nav Goal</cite> tool in RVIZ.  To use the tool in RVIZ, make sure the Global Frame is set to “map”. then select 2D Nav Goal from the top bar.  Click in the map to set the position of the goal.  Continue holding the mouse and drag the mouse in the direction you want the robot to face when it stops and release the mouse.  You should see the global plan appear and the local plan and local map updating as the robot navigates.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h4>Contents</h4>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_machine_setup.html">Developer Machine Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-limo-software">Install Limo Software</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulating_limo.html">Simulating Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#building-simulation-packages">Building Simulation Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#starting-a-simulation">Starting a Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling_limo.html">Controlling a Real Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#keyboard-control">Keyboard Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#rviz-control">RVIZ Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#terminal-control">Terminal Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#ros">ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Autonomy</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GMapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="navigation_rtabmap.html">RTABMap</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking Multiple ROS Machines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#setting-a-ros-master">Setting a ROS master</a></li>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#hosts">Hosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting_limo.html">Limo Startup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#connect-to-the-limo">Connect to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#automatic-startup">Automatic Startup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_urdf.html">Customizing Limo’s URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#pick-a-mounting-point">Pick a Mounting Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#create-your-urdf">Create your URDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#add-it-to-the-limo">Add it to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#urdf-adjustments">URDF Adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#gazebo">Gazebo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factory_reset.html">Factory Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="navigation_rtabmap.html" title="RTABMap"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="useful_links.html" title="Useful Resources"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, AgileY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

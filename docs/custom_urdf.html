@@ -1,0 +1,235 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Customizing Limo’s URDF &#8212; limo-agx  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Factory Reset" href="factory_reset.html" />
+    <link rel="prev" title="Limo Startup" href="starting_limo.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="factory_reset.html" title="Factory Reset"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="starting_limo.html" title="Limo Startup"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="customizing-limo-s-urdf">
+<h1>Customizing Limo’s URDF<a class="headerlink" href="#customizing-limo-s-urdf" title="Permalink to this headline">¶</a></h1>
+<p>We’re going to customize the robot’s view of itself. This will control how it is displayed in RVIZ and can be used for collision detection.  This is a basic example, but it can be extended to new sensors, manipulators, etc.</p>
+<p>Make sure you’ve followed the <a class="reference internal" href="developer_machine_setup.html"><span class="doc">Developer Machine Setup</span></a> before starting this section</p>
+<div class="section" id="pick-a-mounting-point">
+<h2>Pick a Mounting Point<a class="headerlink" href="#pick-a-mounting-point" title="Permalink to this headline">¶</a></h2>
+<p>We’re first going to look at the default Limo model to decide where we want to mount our new hardware</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_viz view_four_diff_model.launch
+</pre></div>
+</div>
+<p>This will show a static version of the URDF that the robot is using.</p>
+<img alt="_images/URDF_RVIZ.png" src="_images/URDF_RVIZ.png" />
+<p>To visualize the individual frames that make up the robot, under Add in the bottom-left, select TF out of the list</p>
+<img alt="_images/URDF_RVIZ_TF.png" src="_images/URDF_RVIZ_TF.png" />
+<p>That will display all of the Transform Frames in use.  This can get really messy to see, so expand TF, and under Frames, un-check all of them except <cite>base_link</cite>.  That will show only the link we will use for our attachment</p>
+<img alt="_images/URDF_TF.png" src="_images/URDF_TF.png" />
+</div>
+<div class="section" id="create-your-urdf">
+<h2>Create your URDF<a class="headerlink" href="#create-your-urdf" title="Permalink to this headline">¶</a></h2>
+<p>You can create a whole new package for this if you are comfortable with ROS.  For simplicity, we are going to expand the <cite>limo_description</cite> package.</p>
+<p>Download the cone model from <a class="reference external" href="_static/cone.dae">HERE</a> (Right-click and save link as).  Take the downloaded file and move it into the “meshes” folder under limo_description.</p>
+<p>Next, create a new text file under the “urdf” folder in limo_description and call it “cone.urdf.xacro”.  Open that file with your favourite text editor and past in the text below</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;robot</span> <span class="na">name=</span><span class="s">&quot;cone&quot;</span> <span class="na">xmlns:xacro=</span><span class="s">&quot;http://ros.org/wiki/xacro&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;cone_link&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;visual&gt;</span>
+            <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;geometry&gt;</span>
+                <span class="nt">&lt;mesh</span> <span class="na">filename=</span><span class="s">&quot;package://limo_description/meshes/cone.dae&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/geometry&gt;</span>
+        <span class="nt">&lt;/visual&gt;</span>
+        <span class="nt">&lt;collision&gt;</span>
+            <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;geometry&gt;</span>
+                <span class="nt">&lt;mesh</span> <span class="na">filename=</span><span class="s">&quot;package://limo_description/meshes/cone.dae&quot;</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/geometry&gt;</span>
+        <span class="nt">&lt;/collision&gt;</span>
+    <span class="nt">&lt;/link&gt;</span>
+
+    <span class="nt">&lt;joint</span> <span class="na">name=</span><span class="s">&quot;cone_joint&quot;</span> <span class="na">type=</span><span class="s">&quot;fixed&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;parent</span> <span class="na">link=</span><span class="s">&quot;base_link&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;child</span> <span class="na">link=</span><span class="s">&quot;cone_link&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0  0&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/joint&gt;</span>
+<span class="nt">&lt;/robot&gt;</span>
+</pre></div>
+</div>
+<p>This file is an XML file.  It has 2 tags, link and joint.  A link is a rigid body.  It doesn’t strictly need to have any mass or volume.  The other important tag is a joint.  This is the way that links are connected together.  It could be a static joint (like glue or a bolt) or it could be a controlled joint (revolute, linear, etc)</p>
+<p>Our urdf has a static (fixed) joint that connects a link called “cone_link” to “base_link”.  It currently has no offset from the normal base_link.  It also has a dae file to give a visual shape to the link and the same dae to calculate collisions.</p>
+</div>
+<div class="section" id="add-it-to-the-limo">
+<h2>Add it to the Limo<a class="headerlink" href="#add-it-to-the-limo" title="Permalink to this headline">¶</a></h2>
+<p>The limo has a line in the URDF that allows simple modification.  This will include nothing by default, but if a URDF is specified at the <cite>URDF_EXTENSION</cite> environment variable, it will include it</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;xacro:include</span> <span class="na">filename=</span><span class="s">&quot;$(optenv URDF_EXTENSION empty.urdf)&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>To set the environment variable, past the line below into your terminal</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">URDF_EXTENSION</span><span class="o">=</span><span class="k">$(</span>catkin_find limo_description urdf/cone.urdf.xacro --first-only<span class="k">)</span>
+</pre></div>
+</div>
+<p>This will use catkin to find the limo_description package and then return the filepath for urdf/cone.urdf.xacro.  All of that will be saved in the <cite>URDF_EXTENSION</cite> environment variable</p>
+</div>
+<div class="section" id="urdf-adjustments">
+<h2>URDF Adjustments<a class="headerlink" href="#urdf-adjustments" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/URDF_Giant.png" src="_images/URDF_Giant.png" />
+<p>The geometry for this cone is much too large for our limo.  Add the <cite>scale</cite> property to each geometry tag to scale it down</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;geometry&gt;</span>
+    <span class="nt">&lt;mesh</span> <span class="na">filename=</span><span class="s">&quot;package://limo_description/meshes/cone.dae&quot;</span> <span class="na">scale=</span><span class="s">&quot;0.07 0.07 0.07&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/geometry&gt;</span>
+</pre></div>
+</div>
+<p>That makes the cone a much better size, but it is still hitting the antennas.  We want to shift it back slightly.  We could move the visual and collision geometry back, but then the cone won’t line up with its frame anymore.  It’s better to shift the joint that connects the cone to the robot.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;joint</span> <span class="na">name=</span><span class="s">&quot;cone_joint&quot;</span> <span class="na">type=</span><span class="s">&quot;fixed&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;parent</span> <span class="na">link=</span><span class="s">&quot;base_link&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;child</span> <span class="na">link=</span><span class="s">&quot;cone_link&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;-0.03 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0  0&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/joint&gt;</span>
+</pre></div>
+</div>
+<img alt="_images/URDF_Done.png" src="_images/URDF_Done.png" />
+</div>
+<div class="section" id="gazebo">
+<h2>Gazebo<a class="headerlink" href="#gazebo" title="Permalink to this headline">¶</a></h2>
+<p>When running a simulation in Gazebo, it’s important that Gazebo knows the physical properties of the object.  It does that through an <cite>inertial</cite> tag within the link tag.  The intertial values vary for each object, but below is a basic “dummy” inertia to start with</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;inertial&gt;</span>
+  <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;mass</span> <span class="na">value=</span><span class="s">&quot;1&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;inertia</span>
+    <span class="na">ixx=</span><span class="s">&quot;1.0&quot;</span> <span class="na">ixy=</span><span class="s">&quot;0.0&quot;</span> <span class="na">ixz=</span><span class="s">&quot;0.0&quot;</span>
+    <span class="na">iyy=</span><span class="s">&quot;1.0&quot;</span> <span class="na">iyz=</span><span class="s">&quot;0.0&quot;</span>
+    <span class="na">izz=</span><span class="s">&quot;1.0&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/inertial&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h4>Contents</h4>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_machine_setup.html">Developer Machine Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-limo-software">Install Limo Software</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulating_limo.html">Simulating Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#building-simulation-packages">Building Simulation Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#starting-a-simulation">Starting a Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling_limo.html">Controlling a Real Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#keyboard-control">Keyboard Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#rviz-control">RVIZ Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#terminal-control">Terminal Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#ros">ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Autonomy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigation_gmapping.html">GMapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="navigation_rtabmap.html">RTABMap</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking Multiple ROS Machines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#setting-a-ros-master">Setting a ROS master</a></li>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#hosts">Hosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting_limo.html">Limo Startup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#connect-to-the-limo">Connect to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#automatic-startup">Automatic Startup</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Customizing Limo’s URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pick-a-mounting-point">Pick a Mounting Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-your-urdf">Create your URDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-it-to-the-limo">Add it to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#urdf-adjustments">URDF Adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gazebo">Gazebo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factory_reset.html">Factory Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="factory_reset.html" title="Factory Reset"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="starting_limo.html" title="Limo Startup"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, AgileY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

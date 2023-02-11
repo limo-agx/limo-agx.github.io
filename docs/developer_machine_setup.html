@@ -1,0 +1,173 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Developer Machine Setup &#8212; limo-agx  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simulating Limo" href="simulating_limo.html" />
+    <link rel="prev" title="Welcome to limo-agx’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="simulating_limo.html" title="Simulating Limo"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to limo-agx’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="developer-machine-setup">
+<h1>Developer Machine Setup<a class="headerlink" href="#developer-machine-setup" title="Permalink to this headline">¶</a></h1>
+<p>To interact with and develop for the Limo, it helps to have a computer that can remotely monitor and interact with the Limo as well as simulate one.</p>
+<div class="section" id="install-ros">
+<h2>Install ROS<a class="headerlink" href="#install-ros" title="Permalink to this headline">¶</a></h2>
+<p>You will need to install ROS.  Follow the setup steps at the <a class="reference external" href="http://wiki.ros.org/melodic/Installation/Ubuntu">ROS Wiki</a>.  Make sure to follow all of the steps so you are able to build packages and install dependencies using rosdep</p>
+</div>
+<div class="section" id="install-limo-software">
+<h2>Install Limo Software<a class="headerlink" href="#install-limo-software" title="Permalink to this headline">¶</a></h2>
+<p>Currently the Limo software is distributed from source and built locally.  To create and build the workspace, follow the commands below</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a workspace</span>
+mkdir -p ~/catkin_ws/src
+<span class="nb">cd</span> ~/catkin_ws/src
+<span class="nb">source</span> /opt/ros/melodic/setup.bash
+catkin_init_workspace
+
+<span class="c1"># download source code</span>
+git clone https://github.com/limo-agx/limo.git
+git clone https://github.com/limo-agx/limo_robot.git
+git clone https://ithub.com/limo-agx/limo_desktop.git
+git clone https://ithub.com/limo-agx/limo_simulator.git
+
+<span class="c1"># install dependencies</span>
+<span class="nb">cd</span> ~/catkin_ws/
+rosdep install --from-paths src --ignore-src -y
+
+<span class="c1"># build everything</span>
+catkin_make
+</pre></div>
+</div>
+<p>If you are working with a real robot, make sure to check out the <a class="reference internal" href="networking.html"><span class="doc">Networking</span></a> section</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h4>Contents</h4>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Machine Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-limo-software">Install Limo Software</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulating_limo.html">Simulating Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#building-simulation-packages">Building Simulation Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#starting-a-simulation">Starting a Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling_limo.html">Controlling a Real Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#keyboard-control">Keyboard Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#rviz-control">RVIZ Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#terminal-control">Terminal Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#ros">ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Autonomy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigation_gmapping.html">GMapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="navigation_rtabmap.html">RTABMap</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking Multiple ROS Machines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#setting-a-ros-master">Setting a ROS master</a></li>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#hosts">Hosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="starting_limo.html">Limo Startup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#connect-to-the-limo">Connect to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="starting_limo.html#automatic-startup">Automatic Startup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_urdf.html">Customizing Limo’s URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#pick-a-mounting-point">Pick a Mounting Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#create-your-urdf">Create your URDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#add-it-to-the-limo">Add it to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#urdf-adjustments">URDF Adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#gazebo">Gazebo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factory_reset.html">Factory Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="simulating_limo.html" title="Simulating Limo"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to limo-agx’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, AgileY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,173 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Limo Startup &#8212; limo-agx  documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Customizing Limo’s URDF" href="custom_urdf.html" />
+    <link rel="prev" title="Networking Multiple ROS Machines" href="networking.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="custom_urdf.html" title="Customizing Limo’s URDF"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="networking.html" title="Networking Multiple ROS Machines"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="limo-startup">
+<h1>Limo Startup<a class="headerlink" href="#limo-startup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="connect-to-the-limo">
+<h2>Connect to the Limo<a class="headerlink" href="#connect-to-the-limo" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh agilex@&lt;limo_IP&gt;
+</pre></div>
+</div>
+<p>Once in the Limo, you can start up the robot driver, lidar, and stereo camera with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_bringup limo_start.launch
+</pre></div>
+</div>
+<p>To be able to disconnect from the robot after starting the software and have it keep running, check out <a class="reference external" href="https://www.geeksforgeeks.org/screen-command-in-linux-with-examples/">Screen</a></p>
+<p>Once the robot is up and running, make sure to look at <a class="reference internal" href="networking.html"><span class="doc">Networking</span></a> to remotely monitor and control the robot</p>
+</div>
+<div class="section" id="automatic-startup">
+<h2>Automatic Startup<a class="headerlink" href="#automatic-startup" title="Permalink to this headline">¶</a></h2>
+<p>If you are always working with ROS and want the ROS software to start automatically, the <cite>robot_upstart</cite> package can handle that.  First, install it in case it isn’t already</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install ros-melodic-robot-upstart
+</pre></div>
+</div>
+<p>Then, make sure your workspace is sourced properly.  Check out <em>Sourcing Your Workspace</em> under <a class="reference internal" href="factory_reset.html"><span class="doc">Factory Reset</span></a></p>
+<p>To create the startup job, run the command below</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>rosrun robot_upstart install limo_bringup/launch/limo_start.launch
+sudo systemctl daemon-reload <span class="o">&amp;&amp;</span> sudo systemctl start limo
+</pre></div>
+</div>
+<p>Now, every time you turn on your Limo, the default ROS drivers will start.</p>
+<p>If you don’t want the ROS to startup automatically anymore, run the command below</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo systemctl disable limo
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h4>Contents</h4>
+<p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="developer_machine_setup.html">Developer Machine Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="developer_machine_setup.html#install-limo-software">Install Limo Software</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simulating_limo.html">Simulating Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#building-simulation-packages">Building Simulation Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#starting-a-simulation">Starting a Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulating_limo.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="controlling_limo.html">Controlling a Real Limo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#keyboard-control">Keyboard Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#rviz-control">RVIZ Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controlling_limo.html#terminal-control">Terminal Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful Resources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#ros">ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="useful_links.html#packages">Packages</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Autonomy</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigation_gmapping.html">GMapping</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="navigation_rtabmap.html">RTABMap</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking Multiple ROS Machines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#setting-a-ros-master">Setting a ROS master</a></li>
+<li class="toctree-l2"><a class="reference internal" href="networking.html#hosts">Hosts</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Limo Startup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#connect-to-the-limo">Connect to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-startup">Automatic Startup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="custom_urdf.html">Customizing Limo’s URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#pick-a-mounting-point">Pick a Mounting Point</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#create-your-urdf">Create your URDF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#add-it-to-the-limo">Add it to the Limo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#urdf-adjustments">URDF Adjustments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_urdf.html#gazebo">Gazebo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="factory_reset.html">Factory Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="custom_urdf.html" title="Customizing Limo’s URDF"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="networking.html" title="Networking Multiple ROS Machines"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">limo-agx  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, AgileY.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>
