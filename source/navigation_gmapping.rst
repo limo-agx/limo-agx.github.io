@@ -18,7 +18,7 @@ To monitor the mapping process, you can run RVIZ
 
 .. code-block:: bash
 
-    roslaunch limo_viz view_navigation
+    roslaunch limo_viz view_navigation_gmapping.launch
 
 .. image:: images/gmapping.png
 
@@ -35,8 +35,8 @@ Once the robot has a map of the environment, it can navigate around it.  To star
 
 .. code-block:: bash
 
-    roslaunch limo_navigation limo_amcl_diff.launch
-    roslaunch limo_navigation limo_amcl_ackerman.launch
+    roslaunch limo_navigation limo_navigation_amcl_diff.launch
+    roslaunch limo_navigation limo_navigation_amcl_ackerman.launch
 
 You can optionally pass-in "map_file" as a parameter that points to the map you created.  For this tutorial, we will use the included map of the environment by default.
 

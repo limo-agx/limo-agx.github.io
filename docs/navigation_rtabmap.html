@@ -44,6 +44,37 @@
             
   <div class="section" id="rtabmap">
 <h1>RTABMap<a class="headerlink" href="#rtabmap" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial is using a <a class="reference internal" href="simulating_limo.html"><span class="doc">simulation</span></a>, but the process would be the same for a real Limo</p>
+<p>For navigation to be useful, the robot needs a map of the environment around it.  It will use that map for high-level planning.  We are going to use RTABMap to create a 3D map.  It uses something called SLAM (Simultaneous Localization and Mapping) to create that map.  The robot will get data from its sensors (2D lidar and stereo camera).  It will use that data to find itself in the current map (Localization), then add any new data to the map (Mapping).  It will repeat this loop over and over until a map is complete.</p>
+<div class="section" id="creating-a-map">
+<h2>Creating a Map<a class="headerlink" href="#creating-a-map" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_navigation limo_rtabmap.launch
+</pre></div>
+</div>
+<p>This will start rtabmap in the terminal.  Now you need to drive the robot around the environment.  Ideally it will see the same areas multiple times.  This will create a better map.  See <a class="reference internal" href="controlling_limo.html"><span class="doc">control</span></a> for how to drive it around.</p>
+<p>To monitor the mapping process, you can run RVIZ</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_viz view_navigation_rtabmap.launch
+</pre></div>
+</div>
+<img alt="_images/rtabmap.png" src="_images/rtabmap.png" />
+<p>Once you stop the rtabmap process in the terminal, it will save the map.  The default is ~/.ros/rtabmap.db.  These maps can be very large.  If you start a new map, the old one will be overwritten, so be sure to back it up if you need to use it again.</p>
+</div>
+<div class="section" id="autonomous-navigation">
+<h2>Autonomous Navigation<a class="headerlink" href="#autonomous-navigation" title="Permalink to this headline">¶</a></h2>
+<p>Once the robot has a map of the environment, it can navigate around it.  To start navigation, run <strong>one</strong> of the commands below depending on how your robot is setup</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch limo_navigation limo_navigation_rtabmap_diff.launch
+roslaunch limo_navigation limo_navigation_rtabmap_ackerman.launch
+</pre></div>
+</div>
+<p>Since the map files can be large, you will need to run the mapping yourself ahead of time as no map is provided</p>
+<p>This command will start rtabmap in localization mode and move_base.</p>
+<ul class="simple">
+<li>rtabmap will take sensor data from the lidar and stereo camera and try to estimate where the robot is in the map.  Driving the robot around will improve the accuracy of this estimate</li>
+<li>move_base will take the position estimate and the map from rtabmap and it will plan how to get to the requested position (gloabl plan).  It will also take sensor data from the lidar to replan around new obstacles (local plan) as it tries to follow the global plan</li>
+</ul>
+<img alt="_images/rtabmap_navigation.png" src="_images/rtabmap_navigation.png" />
+<p>To send the robot a goal, you can either send a message to the <cite>/move_base_simple/goal</cite> topic, or you can use the interactive <cite>2D Nav Goal</cite> tool in RVIZ.  To use the tool in RVIZ, make sure the Global Frame is set to “map”. then select 2D Nav Goal from the top bar.  Click in the map to set the position of the goal.  Continue holding the mouse and drag the mouse in the direction you want the robot to face when it stops and release the mouse.  You should see the global plan appear and the local plan and local map updating as the robot navigates.</p>
+</div>
 </div>
 
 
@@ -84,7 +115,11 @@
 <li class="toctree-l2"><a class="reference internal" href="navigation_gmapping.html#autonomous-navigation">Autonomous Navigation</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">RTABMap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">RTABMap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-map">Creating a Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#autonomous-navigation">Autonomous Navigation</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Working With a Real Limo</span></p>
 <ul>
@@ -110,8 +145,8 @@
 <li class="toctree-l2"><a class="reference internal" href="factory_reset.html#reinsall-the-operating-system">Reinsall the Operating System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-ros">Install ROS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory_reset.html#install-limo-software">Install Limo Software</a></li>
-<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
 <li class="toctree-l2"><a class="reference internal" href="factory_reset.html#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="factory_reset.html#sourcing-your-workspace">Sourcing Your Workspace</a></li>
 </ul>
 </li>
 </ul>
