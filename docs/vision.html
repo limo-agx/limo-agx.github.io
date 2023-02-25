@@ -54,6 +54,7 @@
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --recursive http://github.com/limo-agx/limo_vision.git
 <span class="nb">cd</span> ..
+rosdep install --from-paths src --ignore-src -y
 catkin_make
 <span class="nb">source</span> devel/setup.bash
 </pre></div>

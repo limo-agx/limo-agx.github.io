@@ -16,6 +16,7 @@ In your workspace, you will need to clone and build the vision package.
 
     git clone --recursive http://github.com/limo-agx/limo_vision.git
     cd ..
+    rosdep install --from-paths src --ignore-src -y
     catkin_make
     source devel/setup.bash
 
