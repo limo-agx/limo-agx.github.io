@@ -16,6 +16,7 @@ Welcome to limo-agx's documentation!
 
    navigation_gmapping
    navigation_rtabmap
+   vision
 
 .. toctree::
    :maxdepth: 1
