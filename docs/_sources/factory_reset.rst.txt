@@ -30,7 +30,7 @@ Currently the Limo software is distributed from source and built locally.  To cr
     # download source code
     git clone https://github.com/limo-agx/limo.git
     git clone https://github.com/limo-agx/limo_robot.git
-    git clone https://ithub.com/limo-agx/limo_desktop.git
+    git clone https://github.com/limo-agx/limo_desktop.git
     git clone https://github.com/orbbec/ros_astra_camera.git
 
     # install dependencies
