@@ -14,6 +14,23 @@ Install ROS
 
 You will need to install ROS.  Follow the setup steps at the `ROS Wiki <http://wiki.ros.org/melodic/Installation/Ubuntu>`_.  Make sure to follow all of the steps so you are able to build packages and install dependencies using rosdep
 
+Setup Orbbec Camera
+-------------------
+
+.. code-block:: bash
+
+    sudo apt install libgflags-dev  ros-$ROS_DISTRO-image-geometry ros-$ROS_DISTRO-camera-info-manager\
+    ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher libgoogle-glog-dev libusb-1.0-0-dev libeigen3-dev
+
+.. code-block:: bash
+
+    git clone https://github.com/libuvc/libuvc.git
+    cd libuvc
+    mkdir build && cd build
+    cmake .. && make -j4
+    sudo make install
+    sudo ldconfig
+
 Install Limo Software
 -----------------------
 
@@ -39,23 +56,6 @@ Currently the Limo software is distributed from source and built locally.  To cr
 
     # build everything
     catkin_make
-
-Setup Orbbec Camera
--------------------
-
-.. code-block:: bash
-
-    sudo apt install libgflags-dev  ros-$ROS_DISTRO-image-geometry ros-$ROS_DISTRO-camera-info-manager\
-    ros-$ROS_DISTRO-image-transport ros-$ROS_DISTRO-image-publisher libgoogle-glog-dev libusb-1.0-0-dev libeigen3-dev
-
-.. code-block:: bash
-
-    git clone https://github.com/libuvc/libuvc.git
-    cd libuvc
-    mkdir build && cd build
-    cmake .. && make -j4
-    sudo make install
-    sudo ldconfig
 
 Sourcing Your Workspace
 -----------------------

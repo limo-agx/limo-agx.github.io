@@ -49,6 +49,21 @@
 <h2>Install ROS<a class="headerlink" href="#install-ros" title="Permalink to this headline">¶</a></h2>
 <p>You will need to install ROS.  Follow the setup steps at the <a class="reference external" href="http://wiki.ros.org/melodic/Installation/Ubuntu">ROS Wiki</a>.  Make sure to follow all of the steps so you are able to build packages and install dependencies using rosdep</p>
 </div>
+<div class="section" id="setup-orbbec-camera">
+<h2>Setup Orbbec Camera<a class="headerlink" href="#setup-orbbec-camera" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install libgflags-dev  ros-<span class="nv">$ROS_DISTRO</span>-image-geometry ros-<span class="nv">$ROS_DISTRO</span>-camera-info-manager<span class="se">\</span>
+ros-<span class="nv">$ROS_DISTRO</span>-image-transport ros-<span class="nv">$ROS_DISTRO</span>-image-publisher libgoogle-glog-dev libusb-1.0-0-dev libeigen3-dev
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/libuvc/libuvc.git
+<span class="nb">cd</span> libuvc
+mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+cmake .. <span class="o">&amp;&amp;</span> make -j4
+sudo make install
+sudo ldconfig
+</pre></div>
+</div>
+</div>
 <div class="section" id="install-limo-software">
 <h2>Install Limo Software<a class="headerlink" href="#install-limo-software" title="Permalink to this headline">¶</a></h2>
 <p>Currently the Limo software is distributed from source and built locally.  To create and build the workspace, follow the commands below</p>
@@ -70,21 +85,6 @@ rosdep install --from-paths src --ignore-src -y
 
 <span class="c1"># build everything</span>
 catkin_make
-</pre></div>
-</div>
-</div>
-<div class="section" id="setup-orbbec-camera">
-<h2>Setup Orbbec Camera<a class="headerlink" href="#setup-orbbec-camera" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install libgflags-dev  ros-<span class="nv">$ROS_DISTRO</span>-image-geometry ros-<span class="nv">$ROS_DISTRO</span>-camera-info-manager<span class="se">\</span>
-ros-<span class="nv">$ROS_DISTRO</span>-image-transport ros-<span class="nv">$ROS_DISTRO</span>-image-publisher libgoogle-glog-dev libusb-1.0-0-dev libeigen3-dev
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/libuvc/libuvc.git
-<span class="nb">cd</span> libuvc
-mkdir build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
-cmake .. <span class="o">&amp;&amp;</span> make -j4
-sudo make install
-sudo ldconfig
 </pre></div>
 </div>
 </div>
@@ -169,8 +169,8 @@ sudo ldconfig
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Factory Reset</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#reinsall-the-operating-system">Reinsall the Operating System</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-ros">Install ROS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-limo-software">Install Limo Software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#setup-orbbec-camera">Setup Orbbec Camera</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-limo-software">Install Limo Software</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#sourcing-your-workspace">Sourcing Your Workspace</a></li>
 </ul>
 </li>
